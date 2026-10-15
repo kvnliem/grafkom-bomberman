@@ -1,7 +1,13 @@
 import { Objek } from "../shared/objek.js";
-import { LIBS } from "../shared/libs.js";
 
 var badan, pinggulKiri, pinggulKanan;
+
+// Matrix position helper copied from shared/libs.js for this character module.
+function setPosition(matrix, x, y, z) {
+    matrix[12] = x;
+    matrix[13] = y;
+    matrix[14] = z;
+}
 
 // --- 1. PRIMITIVES (BENTUK DASAR YANG AMAN DARI BUG) ---
 
@@ -191,7 +197,7 @@ export function buatWhiteBomber(GL) {
     pinggulKiri = new Objek(GL); pinggulKanan = new Objek(GL);
     var kakiKiri = new Objek(GL); var kakiKanan = new Objek(GL);
 
-    LIBS.set_position(badan.MOVEMATRIX, 0, 1.3, 0);
+    setPosition(badan.MOVEMATRIX, 0, 1.3, 0);
     root.addChild(badan);
     badan.addChild(kepala);
     badan.addChild(pinggulKiri); badan.addChild(pinggulKanan);
@@ -211,28 +217,28 @@ export function buatWhiteBomber(GL) {
     // A. BADAN & SABUK
     var b_baju = buatBadanBomber(48);
     var bajuBiru = new Objek(GL, b_baju.vertex, b_baju.faces, warnaBiru);
-    LIBS.set_position(bajuBiru.MOVEMATRIX, 0, 0, 0);
+    setPosition(bajuBiru.MOVEMATRIX, 0, 0, 0);
     badan.addChild(bajuBiru);
 
     var b_sabuk = buatTabungY(0.42, 0.42, 0.17, 48);
     var sabuk = new Objek(GL, b_sabuk.vertex, b_sabuk.faces, warnaHitam);
-    LIBS.set_position(sabuk.MOVEMATRIX, 0, 0.04, 0);
+    setPosition(sabuk.MOVEMATRIX, 0, 0.04, 0);
     bajuBiru.addChild(sabuk);
 
     var b_gesper = buatKotak(0.22, 0.16, 0.05);
     var gesper = new Objek(GL, b_gesper.vertex, b_gesper.faces, warnaKuning);
-    LIBS.set_position(gesper.MOVEMATRIX, 0, 0, 0.42);
+    setPosition(gesper.MOVEMATRIX, 0, 0, 0.42);
     sabuk.addChild(gesper);
     
     var b_lubang = buatKotak(0.12, 0.08, 0.06);
     var lubangGesper = new Objek(GL, b_lubang.vertex, b_lubang.faces, warnaHitam);
-    LIBS.set_position(lubangGesper.MOVEMATRIX, 0, 0, 0);
+    setPosition(lubangGesper.MOVEMATRIX, 0, 0, 0);
     gesper.addChild(lubangGesper);
 
     // B. KEPALA (Metode Bola Bertabrakan untuk hasil Flat Face yang presisi)
     var b_helm = buatHelm(0.78, 0.65, 0.72, 128, 128, 0.61, 0.53);
     var helmPutih = new Objek(GL, b_helm.vertex, b_helm.faces, warnaPutih);
-    LIBS.set_position(helmPutih.MOVEMATRIX, 0, 1.23, 0);
+    setPosition(helmPutih.MOVEMATRIX, 0, 1.23, 0);
     bajuBiru.addChild(helmPutih);
 
     // Bezel putih melandai ke dalam, lalu garis gelap dan panel wajah yang tersembunyi.
@@ -242,80 +248,80 @@ export function buatWhiteBomber(GL) {
 
     var b_wajahHitam = buatFaceplate(0.55, 0.47, 0.78, 0.65, 0.72, -0.09, 10, 64);
     var wajahHitam = new Objek(GL, b_wajahHitam.vertex, b_wajahHitam.faces, warnaHitam);
-    LIBS.set_position(wajahHitam.MOVEMATRIX, 0, 0, 0);
+    setPosition(wajahHitam.MOVEMATRIX, 0, 0, 0);
     helmPutih.addChild(wajahHitam);
 
     // Bola peach menembus bola hitam
     var b_wajahPeach = buatFaceplate(0.525, 0.445, 0.78, 0.65, 0.72, -0.075, 10, 64);
     var wajahPeach = new Objek(GL, b_wajahPeach.vertex, b_wajahPeach.faces, warnaPeach);
-    LIBS.set_position(wajahPeach.MOVEMATRIX, 0, 0, 0);
+    setPosition(wajahPeach.MOVEMATRIX, 0, 0, 0);
     helmPutih.addChild(wajahPeach);
 
     // Mata oval panjang menempel di wajah peach
     var b_mata = buatEllipsoid(0.05, 0.21, 0.018, 16, 16);
     var mataKiri = new Objek(GL, b_mata.vertex, b_mata.faces, warnaHitam);
-    LIBS.set_position(mataKiri.MOVEMATRIX, -0.21, 0.0, 0.645);
+    setPosition(mataKiri.MOVEMATRIX, -0.21, 0.0, 0.645);
     helmPutih.addChild(mataKiri);
 
     var mataKanan = new Objek(GL, b_mata.vertex, b_mata.faces, warnaHitam);
-    LIBS.set_position(mataKanan.MOVEMATRIX, 0.21, 0.0, 0.645);
+    setPosition(mataKanan.MOVEMATRIX, 0.21, 0.0, 0.645);
     helmPutih.addChild(mataKanan);
 
     // C. ANTENA (Tepat di kutub utara helm)
     var b_baseAntena = buatTabungY(0.04, 0.1, 0.06, 15);
     var baseAntena = new Objek(GL, b_baseAntena.vertex, b_baseAntena.faces, warnaPutih);
-    LIBS.set_position(baseAntena.MOVEMATRIX, 0, 0.65, -0.20);
+    setPosition(baseAntena.MOVEMATRIX, 0, 0.65, -0.20);
     helmPutih.addChild(baseAntena);
 
     var b_stem = buatTabungY(0.03, 0.03, 0.25, 10);
     var stemAntena = new Objek(GL, b_stem.vertex, b_stem.faces, warnaPutih);
-    LIBS.set_position(stemAntena.MOVEMATRIX, 0.02, 0.16, -0.05);
+    setPosition(stemAntena.MOVEMATRIX, 0.02, 0.16, -0.05);
     baseAntena.addChild(stemAntena);
 
     var b_bola = buatEllipsoid(0.18, 0.18, 0.18, 15, 15);
     var bolaAntena = new Objek(GL, b_bola.vertex, b_bola.faces, warnaPink);
-    LIBS.set_position(bolaAntena.MOVEMATRIX, 0.02, 0.16, -0.10);
+    setPosition(bolaAntena.MOVEMATRIX, 0.02, 0.16, -0.10);
     stemAntena.addChild(bolaAntena);
 
     // D. LENGAN & TANGAN
     var b_lenganKiri = buatTabungX(0.09, 0.065, 0.90, 24);
     var lenganKiri = new Objek(GL, b_lenganKiri.vertex, b_lenganKiri.faces, warnaPutih);
-    LIBS.set_position(lenganKiri.MOVEMATRIX, -0.68, 0.50, 0);
+    setPosition(lenganKiri.MOVEMATRIX, -0.68, 0.50, 0);
     bajuBiru.addChild(lenganKiri);
 
     var b_lenganKanan = buatTabungX(0.065, 0.09, 0.90, 24);
     var lenganKanan = new Objek(GL, b_lenganKanan.vertex, b_lenganKanan.faces, warnaPutih);
-    LIBS.set_position(lenganKanan.MOVEMATRIX, 0.68, 0.50, 0);
+    setPosition(lenganKanan.MOVEMATRIX, 0.68, 0.50, 0);
     bajuBiru.addChild(lenganKanan);
 
     var b_sarungTangan = buatEllipsoid(0.24, 0.24, 0.24, 20, 20);
     var tanganKiri = new Objek(GL, b_sarungTangan.vertex, b_sarungTangan.faces, warnaPink);
-    LIBS.set_position(tanganKiri.MOVEMATRIX, -0.45, 0, 0);
+    setPosition(tanganKiri.MOVEMATRIX, -0.45, 0, 0);
     lenganKiri.addChild(tanganKiri);
 
     var tanganKanan = new Objek(GL, b_sarungTangan.vertex, b_sarungTangan.faces, warnaPink);
-    LIBS.set_position(tanganKanan.MOVEMATRIX, 0.45, 0, 0);
+    setPosition(tanganKanan.MOVEMATRIX, 0.45, 0, 0);
     lenganKanan.addChild(tanganKanan);
 
     // E. KAKI & SEPATU
     // Leg ends are tucked into the shoes; no white geometry should pass through the soles.
     var b_kakiPutih = buatTabungY(0.10, 0.07, 1.00, 20);
     var kakiPutihKiri = new Objek(GL, b_kakiPutih.vertex, b_kakiPutih.faces, warnaPutih);
-    LIBS.set_position(kakiPutihKiri.MOVEMATRIX, -0.15, -0.76, 0);
+    setPosition(kakiPutihKiri.MOVEMATRIX, -0.15, -0.76, 0);
     bajuBiru.addChild(kakiPutihKiri);
 
     var kakiPutihKanan = new Objek(GL, b_kakiPutih.vertex, b_kakiPutih.faces, warnaPutih);
-    LIBS.set_position(kakiPutihKanan.MOVEMATRIX, 0.15, -0.76, 0);
+    setPosition(kakiPutihKanan.MOVEMATRIX, 0.15, -0.76, 0);
     bajuBiru.addChild(kakiPutihKanan);
 
     // Sepatu besar meruncing ke depan
     var b_sepatu = buatEllipsoid(0.24, 0.18, 0.32, 20, 20);
     var sepatuKiri = new Objek(GL, b_sepatu.vertex, b_sepatu.faces, warnaPink);
-    LIBS.set_position(sepatuKiri.MOVEMATRIX, 0, -0.35, 0.15);
+    setPosition(sepatuKiri.MOVEMATRIX, 0, -0.35, 0.15);
     kakiPutihKiri.addChild(sepatuKiri);
 
     var sepatuKanan = new Objek(GL, b_sepatu.vertex, b_sepatu.faces, warnaPink);
-    LIBS.set_position(sepatuKanan.MOVEMATRIX, 0, -0.35, 0.15);
+    setPosition(sepatuKanan.MOVEMATRIX, 0, -0.35, 0.15);
     kakiPutihKanan.addChild(sepatuKanan);
 
     // F. OBJEK WAJIB UTS (DISEMBUNYIKAN UNTUK PENILAIAN)
